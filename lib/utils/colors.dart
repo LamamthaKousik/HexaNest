@@ -36,6 +36,7 @@ class AppColors {
   static const Color syncError = Color(0xFFF56565); // Red
   
   // Background Colors
+  static const Color background = Color(0xFFF5F5F5);
   static const Color backgroundLight = Color(0xFFFAFAFA);
   static const Color backgroundDark = Color(0xFF1A202C);
   

@@ -4,15 +4,19 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'utils/colors.dart';
 import 'utils/constants.dart';
 import 'screens/splash_screen.dart';
+import 'models/visit_model.dart';
 
 /// Main entry point for Matru Mitra app
 /// Initializes Hive database and sets up the app theme
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Hive for local storage
   await Hive.initFlutter();
-  
+
+  // Register Hive adapters
+  Hive.registerAdapter(VisitAdapter());
+
   runApp(
     const ProviderScope(
       child: MatruMitraApp(),

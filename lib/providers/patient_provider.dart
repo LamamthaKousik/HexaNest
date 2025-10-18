@@ -278,7 +278,6 @@ final patientProvider = StateNotifierProvider<PatientNotifier, List<Patient>>((r
 
 /// Provider for patient statistics
 final patientStatsProvider = Provider<Map<String, int>>((ref) {
-  final patients = ref.watch(patientProvider);
   final notifier = ref.read(patientProvider.notifier);
   return notifier.getStatistics();
 });

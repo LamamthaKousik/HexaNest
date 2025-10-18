@@ -7,6 +7,8 @@ import '../widgets/custom_card.dart';
 import 'register_patient_screen.dart';
 import 'patient_list_screen.dart';
 import 'reports_screen.dart';
+import 'health_tips_screen.dart';
+import 'settings_screen.dart';
 
 /// Dashboard screen with main navigation and sync status
 /// Shows overview of patient data and quick actions
@@ -298,6 +300,34 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const ReportsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      
+                      DashboardCard(
+                        title: 'Health Tips',
+                        subtitle: 'Health education',
+                        icon: Icons.lightbulb,
+                        iconColor: AppColors.warning,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const HealthTipsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      
+                      DashboardCard(
+                        title: 'Settings',
+                        subtitle: 'App preferences',
+                        icon: Icons.settings,
+                        iconColor: AppColors.textSecondary,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const SettingsScreen(),
                             ),
                           );
                         },

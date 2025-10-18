@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 import '../models/visit_model.dart';
-import '../utils/constants.dart';
 
 /// Provider for managing visit data with offline-first approach
 class VisitNotifier extends StateNotifier<List<Visit>> {
@@ -221,7 +220,6 @@ final visitProvider = StateNotifierProvider<VisitNotifier, List<Visit>>((ref) {
 
 /// Provider for visit statistics
 final visitStatsProvider = Provider<Map<String, int>>((ref) {
-  final visits = ref.watch(visitProvider);
   final notifier = ref.read(visitProvider.notifier);
   return notifier.getVisitStatistics();
 });

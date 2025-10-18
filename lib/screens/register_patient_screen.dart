@@ -27,6 +27,7 @@ class _RegisterPatientScreenState extends ConsumerState<RegisterPatientScreen> {
 
   String _selectedGender = AppConstants.genderOptions[1]; // Default to Female
   String _selectedPregnancyStatus = AppConstants.pregnancyStatusOptions[0]; // Default to Not Pregnant
+  String _selectedHealthScheme = AppConstants.healthSchemeOptions[0]; // Default to None
   DateTime _lastVisitDate = DateTime.now();
   bool _isLoading = false;
 
@@ -78,6 +79,7 @@ class _RegisterPatientScreenState extends ConsumerState<RegisterPatientScreen> {
         phoneNumber: _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null,
         address: _addressController.text.trim().isNotEmpty ? _addressController.text.trim() : null,
         notes: _notesController.text.trim().isNotEmpty ? _notesController.text.trim() : null,
+        healthScheme: _selectedHealthScheme == 'None' ? null : _selectedHealthScheme,
       );
 
       final success = await ref.read(patientProvider.notifier).addPatient(patient);
@@ -343,6 +345,28 @@ class _RegisterPatientScreenState extends ConsumerState<RegisterPatientScreen> {
                 onChanged: (value) {
                   setState(() {
                     _selectedPregnancyStatus = value!;
+                  });
+                },
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // Health Scheme
+              DropdownButtonFormField<String>(
+                initialValue: _selectedHealthScheme,
+                decoration: const InputDecoration(
+                  labelText: 'Health Scheme',
+                  prefixIcon: Icon(Icons.health_and_safety),
+                ),
+                items: AppConstants.healthSchemeOptions.map((scheme) {
+                  return DropdownMenuItem(
+                    value: scheme,
+                    child: Text(scheme),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedHealthScheme = value!;
                   });
                 },
               ),

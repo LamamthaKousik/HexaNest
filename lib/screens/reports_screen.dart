@@ -4,6 +4,8 @@ import 'package:fl_chart/fl_chart.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
 import '../providers/patient_provider.dart';
+import '../providers/visit_provider.dart';
+import '../services/export_service.dart';
 import '../widgets/custom_card.dart';
 
 /// Reports screen showing statistics and charts
@@ -16,20 +18,40 @@ class ReportsScreen extends ConsumerStatefulWidget {
 }
 
 class _ReportsScreenState extends ConsumerState<ReportsScreen> {
+  bool _isExporting = false;
+
   @override
   Widget build(BuildContext context) {
     final stats = ref.watch(patientStatsProvider);
     final patients = ref.watch(patientProvider);
+    final visits = ref.watch(visitProvider);
+    final visitStats = ref.watch(visitStatsProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reports & Analytics'),
+        backgroundColor: AppColors.primaryRed,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
               ref.invalidate(patientStatsProvider);
+              ref.invalidate(visitStatsProvider);
             },
+          ),
+          IconButton(
+            icon: _isExporting 
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : const Icon(Icons.download),
+            onPressed: _isExporting ? null : _showExportDialog,
           ),
         ],
       ),
@@ -103,6 +125,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                 ),
                 
                 StatCard(
+                  title: 'Total Visits',
+                  value: '${visitStats['totalVisits'] ?? 0}',
+                  icon: Icons.medical_services,
+                  color: AppColors.primaryBlue,
+                  subtitle: 'Health consultations',
+                ),
+                
+                StatCard(
                   title: 'Synced Data',
                   value: '${stats['syncedPatients'] ?? 0}',
                   icon: Icons.cloud_done,
@@ -111,19 +141,27 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                 ),
                 
                 StatCard(
-                  title: 'Pending Sync',
-                  value: '${stats['pendingSync'] ?? 0}',
-                  icon: Icons.cloud_off,
-                  color: AppColors.pendingSync,
-                  subtitle: 'Awaiting sync',
-                ),
-                
-                StatCard(
                   title: 'Pregnant Women',
                   value: '${stats['pregnantPatients'] ?? 0}',
                   icon: Icons.pregnant_woman,
-                  color: AppColors.primaryBlue,
+                  color: AppColors.primaryRed,
                   subtitle: 'Maternal care',
+                ),
+                
+                StatCard(
+                  title: 'Recent Visits',
+                  value: '${visitStats['recentVisits'] ?? 0}',
+                  icon: Icons.schedule,
+                  color: AppColors.success,
+                  subtitle: 'Last 30 days',
+                ),
+                
+                StatCard(
+                  title: 'Upcoming Visits',
+                  value: '${visitStats['upcomingVisits'] ?? 0}',
+                  icon: Icons.event,
+                  color: AppColors.warning,
+                  subtitle: 'Next 7 days',
                 ),
               ],
             ),
@@ -277,6 +315,47 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                           ),
                           borderData: FlBorderData(show: false),
                           barGroups: _getPregnancyBarGroups(patients),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 32),
+            ],
+            
+            // Visit Types Chart
+            if (visitStats['totalVisits']! > 0) ...[
+              Text(
+                'Visit Types Distribution',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              
+              const SizedBox(height: 16),
+              
+              CustomCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Health Service Utilization',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 200,
+                      child: PieChart(
+                        PieChartData(
+                          sections: _getVisitTypeSections(visits),
+                          sectionsSpace: 2,
+                          centerSpaceRadius: 40,
                         ),
                       ),
                     ),
@@ -501,5 +580,134 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ..sort((a, b) => b.value.compareTo(a.value));
     
     return Map.fromEntries(sortedEntries);
+  }
+
+  /// Show export dialog
+  void _showExportDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Export Data'),
+        content: const Text('Choose the format for exporting your reports:'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _exportData('PDF');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryRed,
+            ),
+            child: const Text(
+              'PDF Report',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _exportData('CSV');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryBlue,
+            ),
+            child: const Text(
+              'CSV Data',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Export data
+  Future<void> _exportData(String format) async {
+    setState(() => _isExporting = true);
+
+    try {
+      final patients = ref.read(patientProvider);
+      final visits = ref.read(visitProvider);
+      final stats = ref.read(patientStatsProvider);
+
+      String? filePath;
+      if (format == 'PDF') {
+        filePath = await ExportService.exportComprehensiveReport(
+          patients,
+          visits,
+          stats,
+        );
+      } else {
+        filePath = await ExportService.exportPatientsAsCSV(patients);
+      }
+
+      if (filePath != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Report exported successfully!\nLocation: $filePath'),
+            backgroundColor: AppColors.synced,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to export report'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Export error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      setState(() => _isExporting = false);
+    }
+  }
+
+  /// Get visit type sections for pie chart
+  List<PieChartSectionData> _getVisitTypeSections(List<dynamic> visits) {
+    final visitTypeCounts = <String, int>{};
+    
+    for (final visit in visits) {
+      final type = visit.visitType ?? 'Unknown';
+      visitTypeCounts[type] = (visitTypeCounts[type] ?? 0) + 1;
+    }
+
+    final colors = [
+      AppColors.primaryRed,
+      AppColors.primaryBlue,
+      AppColors.success,
+      AppColors.warning,
+      AppColors.pendingSync,
+    ];
+
+    int colorIndex = 0;
+    return visitTypeCounts.entries.map((entry) {
+      final color = colors[colorIndex % colors.length];
+      colorIndex++;
+      
+      return PieChartSectionData(
+        value: entry.value.toDouble(),
+        title: '${entry.key}\n${entry.value}',
+        color: color,
+        radius: 60,
+        titleStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          color: AppColors.white,
+        ),
+      );
+    }).toList();
   }
 }

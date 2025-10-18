@@ -339,7 +339,7 @@ class _VisitRecordsScreenState extends ConsumerState<VisitRecordsScreen> {
     ValueChanged<String?> onChanged,
   ) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(

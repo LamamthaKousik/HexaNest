@@ -1,6 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:timezone/timezone.dart' as tz;
 import '../models/patient_model.dart';
 import '../models/visit_model.dart';
 
@@ -70,7 +71,7 @@ class NotificationService {
         patientName.hashCode, // Use patient name hash as ID
         'Visit Reminder',
         '$visitType due for $patientName${notes != null ? '\n$notes' : ''}',
-        reminderDate,
+        tz.TZDateTime.from(reminderDate, tz.local),
         const NotificationDetails(
           android: AndroidNotificationDetails(
             'visit_reminders',
@@ -106,7 +107,7 @@ class NotificationService {
         childName.hashCode + vaccineName.hashCode,
         'Immunization Due',
         '$vaccineName due for $childName',
-        reminderDate,
+        tz.TZDateTime.from(reminderDate, tz.local),
         const NotificationDetails(
           android: AndroidNotificationDetails(
             'immunization_reminders',
@@ -142,7 +143,7 @@ class NotificationService {
         patientName.hashCode + 'pregnancy'.hashCode,
         'Pregnancy Checkup Due',
         'Pregnancy checkup due for $patientName${trimester != null ? '\n$trimester' : ''}',
-        reminderDate,
+        tz.TZDateTime.from(reminderDate, tz.local),
         const NotificationDetails(
           android: AndroidNotificationDetails(
             'pregnancy_reminders',
@@ -178,7 +179,7 @@ class NotificationService {
         tipTitle.hashCode,
         tipTitle,
         tipContent,
-        scheduleTime,
+        tz.TZDateTime.from(scheduleTime, tz.local),
         const NotificationDetails(
           android: AndroidNotificationDetails(
             'health_tips',

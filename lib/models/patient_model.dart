@@ -45,6 +45,9 @@ class Patient extends HiveObject {
   @HiveField(12)
   String? address;
 
+  @HiveField(13)
+  String? healthScheme;
+
   Patient({
     required this.id,
     required this.name,
@@ -59,6 +62,7 @@ class Patient extends HiveObject {
     this.notes,
     this.phoneNumber,
     this.address,
+    this.healthScheme,
   });
 
   /// Create a copy of the patient with updated fields
@@ -76,6 +80,7 @@ class Patient extends HiveObject {
     String? notes,
     String? phoneNumber,
     String? address,
+    String? healthScheme,
   }) {
     return Patient(
       id: id ?? this.id,
@@ -91,6 +96,7 @@ class Patient extends HiveObject {
       notes: notes ?? this.notes,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       address: address ?? this.address,
+      healthScheme: healthScheme ?? this.healthScheme,
     );
   }
 
@@ -110,6 +116,7 @@ class Patient extends HiveObject {
       'notes': notes,
       'phoneNumber': phoneNumber,
       'address': address,
+      'healthScheme': healthScheme,
     };
   }
 
@@ -129,6 +136,7 @@ class Patient extends HiveObject {
       notes: json['notes'],
       phoneNumber: json['phoneNumber'],
       address: json['address'],
+      healthScheme: json['healthScheme'],
     );
   }
 

@@ -17,6 +17,7 @@ class PatientListScreen extends ConsumerStatefulWidget {
 
 class _PatientListScreenState extends ConsumerState<PatientListScreen> {
   String _selectedFilter = 'All';
+  String _selectedVillage = 'All';
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = true;
@@ -70,6 +71,11 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
       }).toList();
     }
 
+    // Apply village filter
+    if (_selectedVillage != 'All') {
+      filtered = filtered.where((p) => p.village == _selectedVillage).toList();
+    }
+
     // Apply status filter
     switch (_selectedFilter) {
       case 'Synced':
@@ -88,6 +94,13 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
     }
 
     return filtered;
+  }
+
+  /// Get unique villages from patients
+  List<String> _getVillages(List<Patient> patients) {
+    final villages = patients.map((p) => p.village).toSet().toList();
+    villages.sort();
+    return ['All', ...villages];
   }
 
   @override
@@ -184,7 +197,33 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
                 
                 const SizedBox(height: 12),
                 
-                // Filter Chips
+                // Village Filter Chips
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: _getVillages(patients).map((village) {
+                      final isSelected = _selectedVillage == village;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: FilterChip(
+                          label: Text(village),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setState(() {
+                              _selectedVillage = village;
+                            });
+                          },
+                          selectedColor: AppColors.primaryBlue.withValues(alpha: 0.2),
+                          checkmarkColor: AppColors.primaryBlue,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                
+                const SizedBox(height: 12),
+                
+                // Status Filter Chips
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -264,7 +303,7 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            _searchQuery.isNotEmpty || _selectedFilter != 'All'
+            _searchQuery.isNotEmpty || _selectedFilter != 'All' || _selectedVillage != 'All'
                 ? 'No patients found'
                 : 'No patients registered yet',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -274,7 +313,7 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            _searchQuery.isNotEmpty || _selectedFilter != 'All'
+            _searchQuery.isNotEmpty || _selectedFilter != 'All' || _selectedVillage != 'All'
                 ? 'Try adjusting your search or filter'
                 : 'Tap the + button to register your first patient',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

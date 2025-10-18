@@ -655,7 +655,7 @@ class _PatientDetailsScreenState extends ConsumerState<PatientDetailsScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RegisterPatientScreen(patient: widget.patient),
+        builder: (context) => const RegisterPatientScreen(),
       ),
     ).then((_) {
       // Refresh data when returning

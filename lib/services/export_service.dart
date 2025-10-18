@@ -1,14 +1,11 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/patient_model.dart';
 import '../models/visit_model.dart';
-import '../utils/colors.dart';
 
 /// Service for exporting data as PDF and CSV files
 /// Provides offline export functionality for reports and patient data
@@ -145,7 +142,17 @@ class ExportService {
       ];
 
       for (final visit in visits) {
-        final patient = patients.firstWhere((p) => p.id == visit.patientId, orElse: () => Patient(id: '', name: 'Unknown', age: 0, gender: '', village: '', healthId: ''));
+        final patient = patients.firstWhere((p) => p.id == visit.patientId, orElse: () => Patient(
+          id: '', 
+          name: 'Unknown', 
+          age: 0, 
+          gender: '', 
+          village: '', 
+          healthId: '',
+          pregnancyStatus: 'Unknown',
+          lastVisitDate: DateTime.now(),
+          registrationDate: DateTime.now(),
+        ));
         
         csvData.add([
           visit.id,
@@ -570,7 +577,17 @@ class ExportService {
           ],
         ),
         ...visits.map((visit) {
-          final patient = patients.firstWhere((p) => p.id == visit.patientId, orElse: () => Patient(id: '', name: 'Unknown', age: 0, gender: '', village: '', healthId: ''));
+          final patient = patients.firstWhere((p) => p.id == visit.patientId, orElse: () => Patient(
+          id: '', 
+          name: 'Unknown', 
+          age: 0, 
+          gender: '', 
+          village: '', 
+          healthId: '',
+          pregnancyStatus: 'Unknown',
+          lastVisitDate: DateTime.now(),
+          registrationDate: DateTime.now(),
+        ));
           return pw.TableRow(
             children: [
               pw.Padding(

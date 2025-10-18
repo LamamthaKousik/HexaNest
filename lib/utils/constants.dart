@@ -25,6 +25,7 @@ class AppConstants {
   static const int healthIdLength = 12;
   
   // UI Constants
+  static const double padding = 16.0;
   static const double defaultPadding = 16.0;
   static const double smallPadding = 8.0;
   static const double largePadding = 24.0;
@@ -79,6 +80,17 @@ class AppConstants {
   static const List<String> genderOptions = [
     'Male',
     'Female',
+    'Other',
+  ];
+  
+  // Health Scheme Options
+  static const List<String> healthSchemeOptions = [
+    'None',
+    'Janani Suraksha Yojana',
+    'Mission Indradhanush',
+    'RCH (Reproductive & Child Health)',
+    'Ayushman Bharat',
+    'PM-JAY',
     'Other',
   ];
   
