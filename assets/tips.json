@@ -1,0 +1,144 @@
+{
+  "tips": [
+    {
+      "id": "tip_001",
+      "category": "Maternal Care",
+      "title": "Prenatal Nutrition",
+      "content": "Pregnant women should consume iron-rich foods like spinach, lentils, and lean meats. Folic acid supplements are essential for fetal development. Include plenty of fruits and vegetables in daily meals.",
+      "detailedContent": "During pregnancy, proper nutrition is crucial for both mother and baby. Iron helps prevent anemia and supports fetal growth. Folic acid reduces the risk of neural tube defects. Calcium supports bone development. Omega-3 fatty acids aid in brain development. Avoid raw fish, unpasteurized dairy, and excessive caffeine.",
+      "priority": "high",
+      "targetAudience": "pregnant_women"
+    },
+    {
+      "id": "tip_002",
+      "category": "Immunization",
+      "title": "Childhood Vaccination Schedule",
+      "content": "Follow the immunization schedule strictly. BCG at birth, DPT at 6, 10, 14 weeks, Measles at 9 months. Keep vaccination records safe and bring them to every visit.",
+      "detailedContent": "Immunization protects children from life-threatening diseases. BCG prevents tuberculosis. DPT protects against diphtheria, pertussis, and tetanus. Measles vaccine prevents measles and its complications. Polio drops prevent polio. Hepatitis B protects against liver disease. Always check with healthcare providers about any missed vaccines.",
+      "priority": "high",
+      "targetAudience": "children"
+    },
+    {
+      "id": "tip_003",
+      "category": "Nutrition",
+      "title": "Balanced Diet for All Ages",
+      "content": "Include all food groups: grains, proteins, vegetables, fruits, and dairy. Eat 5-6 small meals daily. Drink plenty of water. Limit processed foods and sugary drinks.",
+      "detailedContent": "A balanced diet provides essential nutrients for growth and development. Grains provide energy and fiber. Proteins build and repair tissues. Vegetables and fruits provide vitamins and minerals. Dairy products provide calcium for strong bones. Water keeps the body hydrated and helps with digestion. Processed foods often contain high sodium and preservatives.",
+      "priority": "medium",
+      "targetAudience": "all"
+    },
+    {
+      "id": "tip_004",
+      "category": "Disease Prevention",
+      "title": "Hand Hygiene",
+      "content": "Wash hands with soap and water for at least 20 seconds before eating, after using the toilet, and after coughing or sneezing. Use hand sanitizer when soap is not available.",
+      "detailedContent": "Proper hand hygiene is the most effective way to prevent the spread of infections. Wet hands, apply soap, scrub all surfaces including between fingers and under nails, rinse thoroughly, and dry with clean towel. Hand sanitizer should contain at least 60% alcohol. Teach children proper handwashing techniques.",
+      "priority": "high",
+      "targetAudience": "all"
+    },
+    {
+      "id": "tip_005",
+      "category": "Maternal Care",
+      "title": "Postpartum Care",
+      "content": "New mothers need adequate rest, proper nutrition, and emotional support. Watch for signs of postpartum depression. Continue taking iron supplements if prescribed.",
+      "detailedContent": "Postpartum period requires special care for recovery. Rest helps the body heal. Nutritious food supports breastfeeding and recovery. Emotional support prevents postpartum depression. Watch for excessive bleeding, fever, or severe pain. Continue prenatal vitamins as advised. Breastfeeding provides nutrition and immunity to the baby.",
+      "priority": "high",
+      "targetAudience": "new_mothers"
+    },
+    {
+      "id": "tip_006",
+      "category": "General Health",
+      "title": "Regular Health Checkups",
+      "content": "Schedule regular health checkups even when feeling well. Early detection of health issues leads to better treatment outcomes. Keep track of vital signs and symptoms.",
+      "detailedContent": "Preventive healthcare is better than curative care. Regular checkups help detect health issues early. Blood pressure monitoring prevents heart disease. Blood sugar tests detect diabetes early. Cancer screenings save lives. Keep a health diary to track symptoms and medications. Don't ignore minor symptoms.",
+      "priority": "medium",
+      "targetAudience": "all"
+    },
+    {
+      "id": "tip_007",
+      "category": "Nutrition",
+      "title": "Breastfeeding Benefits",
+      "content": "Breast milk provides complete nutrition for babies up to 6 months. It contains antibodies that protect against infections. Breastfeeding also benefits the mother's health.",
+      "detailedContent": "Breast milk is the perfect food for babies. It contains all necessary nutrients in the right proportions. Colostrum (first milk) is rich in antibodies. Breastfeeding reduces the risk of infections, allergies, and chronic diseases. It promotes bonding between mother and baby. Mothers who breastfeed have lower risk of breast and ovarian cancer.",
+      "priority": "high",
+      "targetAudience": "new_mothers"
+    },
+    {
+      "id": "tip_008",
+      "category": "Disease Prevention",
+      "title": "Mosquito-Borne Disease Prevention",
+      "content": "Use mosquito nets while sleeping. Remove standing water around homes. Wear long sleeves and pants during peak mosquito hours. Use mosquito repellents safely.",
+      "detailedContent": "Mosquitoes spread diseases like malaria, dengue, and chikungunya. Mosquito nets provide physical barrier protection. Standing water breeds mosquitoes - empty containers regularly. Peak mosquito activity is during dawn and dusk. DEET-based repellents are most effective. Apply repellents to exposed skin, not under clothing.",
+      "priority": "high",
+      "targetAudience": "all"
+    },
+    {
+      "id": "tip_009",
+      "category": "Maternal Care",
+      "title": "Pregnancy Exercise",
+      "content": "Light exercises like walking and prenatal yoga are beneficial during pregnancy. Avoid strenuous activities and consult healthcare providers before starting any exercise routine.",
+      "detailedContent": "Regular exercise during pregnancy improves mood, sleep, and reduces pregnancy discomforts. Walking is safe and beneficial throughout pregnancy. Prenatal yoga helps with flexibility and breathing. Swimming is excellent low-impact exercise. Avoid contact sports and activities with high fall risk. Stop if experiencing dizziness, chest pain, or contractions.",
+      "priority": "medium",
+      "targetAudience": "pregnant_women"
+    },
+    {
+      "id": "tip_010",
+      "category": "General Health",
+      "title": "Mental Health Awareness",
+      "content": "Mental health is as important as physical health. Talk about feelings and seek help when needed. Practice stress management techniques like deep breathing and meditation.",
+      "detailedContent": "Mental health affects overall well-being. Depression and anxiety are common but treatable. Talking to trusted friends or family helps. Professional counseling provides effective treatment. Stress management techniques include deep breathing, meditation, and regular exercise. Adequate sleep and social connections support mental health. Don't hesitate to seek professional help.",
+      "priority": "medium",
+      "targetAudience": "all"
+    },
+    {
+      "id": "tip_011",
+      "category": "Immunization",
+      "title": "Adult Vaccination",
+      "content": "Adults need booster shots and new vaccines. Tetanus booster every 10 years, flu vaccine annually, and COVID-19 vaccines as recommended. Check with healthcare providers for specific needs.",
+      "detailedContent": "Adult immunization prevents serious diseases. Tetanus boosters protect against tetanus infection. Annual flu vaccines prevent influenza. COVID-19 vaccines reduce severe illness risk. Hepatitis B vaccine protects against liver disease. Pneumococcal vaccine prevents pneumonia. HPV vaccine prevents cervical cancer. Travel vaccines protect during international travel.",
+      "priority": "medium",
+      "targetAudience": "adults"
+    },
+    {
+      "id": "tip_012",
+      "category": "Nutrition",
+      "title": "Safe Food Handling",
+      "content": "Wash fruits and vegetables thoroughly. Cook meat thoroughly. Store food at proper temperatures. Avoid cross-contamination between raw and cooked foods.",
+      "detailedContent": "Food safety prevents foodborne illnesses. Wash produce under running water, even if peeling. Cook meat to proper internal temperatures. Refrigerate perishables within 2 hours. Use separate cutting boards for raw meat and vegetables. Don't leave food at room temperature for more than 2 hours. Check expiration dates on packaged foods.",
+      "priority": "medium",
+      "targetAudience": "all"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Maternal Care",
+      "description": "Tips for pregnant women and new mothers",
+      "icon": "pregnant_woman",
+      "color": "#FF6B6B"
+    },
+    {
+      "name": "Immunization",
+      "description": "Vaccination schedules and importance",
+      "icon": "vaccines",
+      "color": "#89CFF0"
+    },
+    {
+      "name": "Nutrition",
+      "description": "Healthy eating and dietary guidelines",
+      "icon": "restaurant",
+      "color": "#4CAF50"
+    },
+    {
+      "name": "Disease Prevention",
+      "description": "Preventing common diseases and infections",
+      "icon": "health_and_safety",
+      "color": "#FF9800"
+    },
+    {
+      "name": "General Health",
+      "description": "Overall health and wellness tips",
+      "icon": "favorite",
+      "color": "#9C27B0"
+    }
+  ]
+}
