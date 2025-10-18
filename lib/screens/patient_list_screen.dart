@@ -19,6 +19,7 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
   String _selectedFilter = 'All';
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
+  bool _isLoading = true;
 
   final List<String> _filterOptions = [
     'All',
@@ -28,9 +29,33 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize data loading
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadData();
+    });
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      // Ensure Hive is initialized
+      await ref.read(patientProvider.notifier).initializeHive();
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Error loading data: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   List<Patient> _getFilteredPatients(List<Patient> patients) {
@@ -69,6 +94,28 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
   Widget build(BuildContext context) {
     final patients = ref.watch(patientProvider);
     final filteredPatients = _getFilteredPatients(patients);
+    
+    // Show loading state
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Patient List'),
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    
+    // Handle potential null or empty patients list
+    if (patients.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Patient List'),
+        ),
+        body: _buildEmptyState(),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -153,7 +200,7 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
                               _selectedFilter = option;
                             });
                           },
-                          selectedColor: AppColors.primaryRed.withOpacity(0.2),
+                          selectedColor: AppColors.primaryRed.withValues(alpha: 0.2),
                           checkmarkColor: AppColors.primaryRed,
                         ),
                       );
@@ -273,9 +320,9 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundColor: AppColors.primaryRed.withOpacity(0.1),
+                      backgroundColor: AppColors.primaryRed.withValues(alpha: 0.1),
                     child: Text(
-                      patient.name[0].toUpperCase(),
+                      patient.name.isNotEmpty ? patient.name[0].toUpperCase() : '?',
                       style: const TextStyle(
                         color: AppColors.primaryRed,
                         fontWeight: FontWeight.bold,

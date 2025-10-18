@@ -107,7 +107,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       borderRadius: BorderRadius.circular(50),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.black.withOpacity(0.1),
+                          color: AppColors.black.withValues(alpha: 0.1),
                           blurRadius: 10,
                           offset: const Offset(0, 5),
                         ),
@@ -137,7 +137,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Text(
                     'Sign in to continue',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.white.withOpacity(0.9),
+                      color: AppColors.white.withValues(alpha: 0.9),
                     ),
                   ),
                   
@@ -151,7 +151,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.black.withOpacity(0.1),
+                          color: AppColors.black.withValues(alpha: 0.1),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -254,10 +254,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.1),
+                      color: AppColors.white.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                       border: Border.all(
-                        color: AppColors.white.withOpacity(0.3),
+                        color: AppColors.white.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Column(
@@ -279,13 +279,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Text(
                           'Email: ${AppConstants.demoEmail}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.white.withOpacity(0.9),
+                            color: AppColors.white.withValues(alpha: 0.9),
                           ),
                         ),
                         Text(
                           'Password: ${AppConstants.demoPassword}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.white.withOpacity(0.9),
+                            color: AppColors.white.withValues(alpha: 0.9),
                           ),
                         ),
                       ],

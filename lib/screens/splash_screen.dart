@@ -95,7 +95,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                           borderRadius: BorderRadius.circular(60),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.black.withOpacity(0.2),
+                              color: AppColors.black.withValues(alpha: 0.2),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -128,7 +128,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                         child: Text(
                           AppConstants.appTagline,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: AppColors.white.withOpacity(0.9),
+                            color: AppColors.white.withValues(alpha: 0.9),
                             fontWeight: FontWeight.w300,
                             letterSpacing: 0.5,
                           ),
@@ -154,7 +154,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       Text(
                         'Loading...',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.white.withOpacity(0.8),
+                          color: AppColors.white.withValues(alpha: 0.8),
                         ),
                       ),
                     ],

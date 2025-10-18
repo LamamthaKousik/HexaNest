@@ -66,7 +66,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                   Text(
                     'Comprehensive insights into patient data',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.white.withOpacity(0.9),
+                      color: AppColors.white.withValues(alpha: 0.9),
                     ),
                   ),
                 ],
@@ -362,7 +362,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),

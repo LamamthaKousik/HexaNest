@@ -15,22 +15,35 @@ class PatientNotifier extends StateNotifier<List<Patient>> {
 
   /// Initialize Hive database
   Future<void> initializeHive() async {
-    await Hive.initFlutter();
-    
-    // Register adapters
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(PatientAdapter());
+    try {
+      await Hive.initFlutter();
+      
+      // Register adapters
+      if (!Hive.isAdapterRegistered(0)) {
+        Hive.registerAdapter(PatientAdapter());
+      }
+      
+      // Open patient box
+      _patientBox = await Hive.openBox<Patient>(AppConstants.patientsBoxName);
+      _loadPatients();
+    } catch (e) {
+      print('Error initializing Hive: $e');
+      // Initialize with empty state if Hive fails
+      state = [];
     }
-    
-    // Open patient box
-    _patientBox = await Hive.openBox<Patient>(AppConstants.patientsBoxName);
-    _loadPatients();
   }
 
   /// Load patients from local storage
   void _loadPatients() {
-    if (Hive.isBoxOpen(AppConstants.patientsBoxName)) {
-      state = _patientBox.values.toList();
+    try {
+      if (Hive.isBoxOpen(AppConstants.patientsBoxName)) {
+        state = _patientBox.values.toList();
+      } else {
+        state = [];
+      }
+    } catch (e) {
+      print('Error loading patients: $e');
+      state = [];
     }
   }
 
@@ -60,8 +73,11 @@ class PatientNotifier extends StateNotifier<List<Patient>> {
 
       // Update in local storage
       await _patientBox.putAt(index, updatedPatient);
-      state = [...state];
-      state[index] = updatedPatient;
+      
+      // Update state properly
+      final updatedState = List<Patient>.from(state);
+      updatedState[index] = updatedPatient;
+      state = updatedState;
       return true;
     } catch (e) {
       print('Error updating patient: $e');
@@ -120,12 +136,18 @@ class PatientNotifier extends StateNotifier<List<Patient>> {
       await Future.delayed(const Duration(seconds: AppConstants.syncDelaySeconds));
       
       // Update all unsynced patients
-      final unsyncedPatients = getPatientsBySyncStatus(false);
-      for (final patient in unsyncedPatients) {
-        final updatedPatient = patient.copyWith(isSynced: true);
-        await updatePatient(updatedPatient);
+      final updatedState = List<Patient>.from(state);
+      
+      for (int i = 0; i < updatedState.length; i++) {
+        if (!updatedState[i].isSynced) {
+          updatedState[i] = updatedState[i].copyWith(isSynced: true);
+          // Update in local storage
+          await _patientBox.putAt(i, updatedState[i]);
+        }
       }
       
+      // Update state
+      state = updatedState;
       return true;
     } catch (e) {
       print('Error syncing patients: $e');

@@ -7,6 +7,7 @@ import '../widgets/custom_card.dart';
 import 'register_patient_screen.dart';
 import 'patient_list_screen.dart';
 import 'reports_screen.dart';
+import 'debug_screen.dart';
 
 /// Dashboard screen with main navigation and sync status
 /// Shows overview of patient data and quick actions
@@ -30,6 +31,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       appBar: AppBar(
         title: const Text(AppConstants.appName),
         actions: [
+          // Debug Button (only in debug mode)
+          if (const bool.fromEnvironment('dart.vm.product') == false)
+            IconButton(
+              icon: const Icon(Icons.bug_report),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const DebugScreen(),
+                  ),
+                );
+              },
+            ),
           // Sync Status Indicator
           Container(
             margin: const EdgeInsets.only(right: 16),
@@ -90,7 +103,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Text(
                       'Manage your patient records efficiently',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.white.withOpacity(0.9),
+                        color: AppColors.white.withValues(alpha: 0.9),
                       ),
                     ),
                   ],
@@ -110,50 +123,109 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               
               const SizedBox(height: 16),
               
-              Row(
-                children: [
-                  Expanded(
-                    child: StatCard(
-                      title: 'Total Patients',
-                      value: '${stats['totalPatients'] ?? 0}',
-                      icon: Icons.people,
-                      color: AppColors.primaryRed,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: StatCard(
-                      title: 'Synced',
-                      value: '${stats['syncedPatients'] ?? 0}',
-                      icon: Icons.cloud_done,
-                      color: AppColors.synced,
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 16),
-              
-              Row(
-                children: [
-                  Expanded(
-                    child: StatCard(
-                      title: 'Pending Sync',
-                      value: '${stats['pendingSync'] ?? 0}',
-                      icon: Icons.cloud_off,
-                      color: AppColors.pendingSync,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: StatCard(
-                      title: 'Pregnant Women',
-                      value: '${stats['pregnantPatients'] ?? 0}',
-                      icon: Icons.pregnant_woman,
-                      color: AppColors.primaryBlue,
-                    ),
-                  ),
-                ],
+              // Stats Grid - Responsive layout
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth > 600) {
+                    // Wide screen - 4 columns
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: StatCard(
+                                title: 'Total Patients',
+                                value: '${stats['totalPatients'] ?? 0}',
+                                icon: Icons.people,
+                                color: AppColors.primaryRed,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: StatCard(
+                                title: 'Synced',
+                                value: '${stats['syncedPatients'] ?? 0}',
+                                icon: Icons.cloud_done,
+                                color: AppColors.synced,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: StatCard(
+                                title: 'Pending Sync',
+                                value: '${stats['pendingSync'] ?? 0}',
+                                icon: Icons.cloud_off,
+                                color: AppColors.pendingSync,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: StatCard(
+                                title: 'Pregnant Women',
+                                value: '${stats['pregnantPatients'] ?? 0}',
+                                icon: Icons.pregnant_woman,
+                                color: AppColors.primaryBlue,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  } else {
+                    // Narrow screen - 2 columns
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: StatCard(
+                                title: 'Total Patients',
+                                value: '${stats['totalPatients'] ?? 0}',
+                                icon: Icons.people,
+                                color: AppColors.primaryRed,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: StatCard(
+                                title: 'Synced',
+                                value: '${stats['syncedPatients'] ?? 0}',
+                                icon: Icons.cloud_done,
+                                color: AppColors.synced,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: StatCard(
+                                title: 'Pending Sync',
+                                value: '${stats['pendingSync'] ?? 0}',
+                                icon: Icons.cloud_off,
+                                color: AppColors.pendingSync,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: StatCard(
+                                title: 'Pregnant Women',
+                                value: '${stats['pregnantPatients'] ?? 0}',
+                                icon: Icons.pregnant_woman,
+                                color: AppColors.primaryBlue,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
               
               const SizedBox(height: 32),
@@ -169,81 +241,87 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               
               const SizedBox(height: 16),
               
-              GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 1.1,
-                children: [
-                  DashboardCard(
-                    title: 'Register Patient',
-                    subtitle: 'Add new patient record',
-                    icon: Icons.person_add,
-                    iconColor: AppColors.primaryRed,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPatientScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  
-                  DashboardCard(
-                    title: 'Patient List',
-                    subtitle: 'View all patients',
-                    icon: Icons.list_alt,
-                    iconColor: AppColors.primaryBlue,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const PatientListScreen(),
-                        ),
-                      );
-                    },
-                    trailing: stats['totalPatients']! > 0
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryBlue,
-                              borderRadius: BorderRadius.circular(12),
+              // Responsive Grid
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final crossAxisCount = constraints.maxWidth > 600 ? 3 : 2;
+                  return GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.0,
+                    children: [
+                      DashboardCard(
+                        title: 'Register Patient',
+                        subtitle: 'Add new patient record',
+                        icon: Icons.person_add,
+                        iconColor: AppColors.primaryRed,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPatientScreen(),
                             ),
-                            child: Text(
-                              '${stats['totalPatients']}',
-                              style: const TextStyle(
-                                color: AppColors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          );
+                        },
+                      ),
+                      
+                      DashboardCard(
+                        title: 'Patient List',
+                        subtitle: 'View all patients',
+                        icon: Icons.list_alt,
+                        iconColor: AppColors.primaryBlue,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const PatientListScreen(),
                             ),
-                          )
-                        : null,
-                  ),
-                  
-                  DashboardCard(
-                    title: 'Reports',
-                    subtitle: 'View statistics',
-                    icon: Icons.analytics,
-                    iconColor: AppColors.success,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ReportsScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  
-                  DashboardCard(
-                    title: 'Sync Data',
-                    subtitle: _isSyncing ? 'Syncing...' : 'Sync with server',
-                    icon: _isSyncing ? Icons.sync : Icons.sync_alt,
-                    iconColor: _isSyncing ? AppColors.warning : AppColors.info,
-                    onTap: _isSyncing ? null : _syncData,
-                  ),
-                ],
+                          );
+                        },
+                        trailing: (stats['totalPatients'] ?? 0) > 0
+                            ? Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryBlue,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  '${stats['totalPatients']}',
+                                  style: const TextStyle(
+                                    color: AppColors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                            : null,
+                      ),
+                      
+                      DashboardCard(
+                        title: 'Reports',
+                        subtitle: 'View statistics',
+                        icon: Icons.analytics,
+                        iconColor: AppColors.success,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ReportsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      
+                      DashboardCard(
+                        title: 'Sync Data',
+                        subtitle: _isSyncing ? 'Syncing...' : 'Sync with server',
+                        icon: _isSyncing ? Icons.sync : Icons.sync_alt,
+                        iconColor: _isSyncing ? AppColors.warning : AppColors.info,
+                        onTap: _isSyncing ? null : _syncData,
+                      ),
+                    ],
+                  );
+                },
               ),
               
               const SizedBox(height: 32),
@@ -283,18 +361,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       ),
                       const SizedBox(height: 16),
                       ...patients.take(3).map((patient) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.only(bottom: 12),
                         child: Row(
                           children: [
                             CircleAvatar(
-                              radius: 16,
-                              backgroundColor: AppColors.primaryRed.withOpacity(0.1),
+                              radius: 18,
+                              backgroundColor: AppColors.primaryRed.withValues(alpha: 0.1),
                               child: Text(
-                                patient.name[0].toUpperCase(),
+                                patient.name.isNotEmpty ? patient.name[0].toUpperCase() : '?',
                                 style: const TextStyle(
                                   color: AppColors.primaryRed,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 12,
+                                  fontSize: 14,
                                 ),
                               ),
                             ),
@@ -309,16 +387,20 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                       fontWeight: FontWeight.w500,
                                       color: AppColors.textPrimary,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
+                                  const SizedBox(height: 2),
                                   Text(
                                     patient.village,
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                       color: AppColors.textSecondary,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
                             ),
+                            const SizedBox(width: 8),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
@@ -341,6 +423,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                 ),
               ],
+              
+              const SizedBox(height: 100), // Extra space for FAB
             ],
           ),
         ),

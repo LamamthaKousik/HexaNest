@@ -72,17 +72,19 @@ class DashboardCard extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 48,
+            size: 40,
             color: iconColor ?? AppColors.primaryRed,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           Text(
@@ -91,6 +93,8 @@ class DashboardCard extends StatelessWidget {
               color: AppColors.textSecondary,
             ),
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           if (trailing != null) ...[
             const SizedBox(height: 8),
@@ -268,7 +272,7 @@ class StatCard extends StatelessWidget {
               Icon(
                 icon,
                 color: color ?? AppColors.primaryRed,
-                size: 24,
+                size: 20,
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -278,17 +282,21 @@ class StatCard extends StatelessWidget {
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w500,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             value,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: color ?? AppColors.primaryRed,
               fontWeight: FontWeight.bold,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           if (subtitle != null) ...[
             const SizedBox(height: 4),
@@ -297,6 +305,8 @@ class StatCard extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ],

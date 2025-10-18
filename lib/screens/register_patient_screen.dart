@@ -180,7 +180,7 @@ class _RegisterPatientScreenState extends ConsumerState<RegisterPatientScreen> {
                     Text(
                       'Fill in the details below to register a new patient',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.white.withOpacity(0.9),
+                        color: AppColors.white.withValues(alpha: 0.9),
                       ),
                     ),
                   ],
@@ -253,7 +253,7 @@ class _RegisterPatientScreenState extends ConsumerState<RegisterPatientScreen> {
                   
                   Expanded(
                     child: DropdownButtonFormField<String>(
-                      value: _selectedGender,
+                      initialValue: _selectedGender,
                       decoration: const InputDecoration(
                         labelText: 'Gender *',
                         prefixIcon: Icon(Icons.wc),
@@ -328,7 +328,7 @@ class _RegisterPatientScreenState extends ConsumerState<RegisterPatientScreen> {
               
               // Pregnancy Status
               DropdownButtonFormField<String>(
-                value: _selectedPregnancyStatus,
+                initialValue: _selectedPregnancyStatus,
                 decoration: const InputDecoration(
                   labelText: 'Pregnancy Status *',
                   prefixIcon: Icon(Icons.pregnant_woman),
@@ -446,10 +446,10 @@ class _RegisterPatientScreenState extends ConsumerState<RegisterPatientScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.info.withOpacity(0.1),
+                  color: AppColors.info.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                   border: Border.all(
-                    color: AppColors.info.withOpacity(0.3),
+                    color: AppColors.info.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
