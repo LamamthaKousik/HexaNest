@@ -7,7 +7,6 @@ import '../widgets/custom_card.dart';
 import 'register_patient_screen.dart';
 import 'patient_list_screen.dart';
 import 'reports_screen.dart';
-import 'debug_screen.dart';
 
 /// Dashboard screen with main navigation and sync status
 /// Shows overview of patient data and quick actions
@@ -31,18 +30,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       appBar: AppBar(
         title: const Text(AppConstants.appName),
         actions: [
-          // Debug Button (only in debug mode)
-          if (const bool.fromEnvironment('dart.vm.product') == false)
-            IconButton(
-              icon: const Icon(Icons.bug_report),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const DebugScreen(),
-                  ),
-                );
-              },
-            ),
           // Sync Status Indicator
           Container(
             margin: const EdgeInsets.only(right: 16),
@@ -258,12 +245,16 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         subtitle: 'Add new patient record',
                         icon: Icons.person_add,
                         iconColor: AppColors.primaryRed,
-                        onTap: () {
-                          Navigator.of(context).push(
+                        onTap: () async {
+                          final result = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const RegisterPatientScreen(),
                             ),
                           );
+                          // Refresh data if a patient was added
+                          if (result == true) {
+                            _refreshData();
+                          }
                         },
                       ),
                       
@@ -430,12 +421,16 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).push(
+        onPressed: () async {
+          final result = await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const RegisterPatientScreen(),
             ),
           );
+          // Refresh data if a patient was added
+          if (result == true) {
+            _refreshData();
+          }
         },
         icon: const Icon(Icons.person_add),
         label: const Text('Add Patient'),
@@ -495,5 +490,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     // Refresh patient data
     ref.invalidate(patientProvider);
     ref.invalidate(patientStatsProvider);
+    
+    // Also refresh the provider state
+    await ref.read(patientProvider.notifier).initializeHive();
   }
 }

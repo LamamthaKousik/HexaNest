@@ -90,7 +90,8 @@ class _RegisterPatientScreenState extends ConsumerState<RegisterPatientScreen> {
               backgroundColor: AppColors.success,
             ),
           );
-          Navigator.of(context).pop();
+          // Navigate back and refresh data
+          Navigator.of(context).pop(true);
         }
       } else {
         if (mounted) {
