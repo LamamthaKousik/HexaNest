@@ -2,7 +2,7 @@
 
 ![Matru Mitra Logo](https://img.shields.io/badge/Matru%20Mitra-EHR%20Companion-red?style=for-the-badge&logo=health-and-safety)
 
-An **offline-first Electronic Health Record (EHR) companion app** designed specifically for **ASHA and PHC workers** in low-internet rural areas of India. Built for **HackVerse 1.0 2025** and based on **Smart India Hackathon 2025** project (Problem ID: SIH25219).
+An **offline-first Electronic Health Record (EHR) companion app** designed specifically for **ASHA and PHC workers** in low-internet rural areas of India. Built for **HackVerse 1.0 2025**.
 
 ## 🎯 Project Overview
 
@@ -267,7 +267,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🏆 Hackathon Information
 
 - **Event**: HackVerse 1.0 2025
-- **Problem Statement**: SIH25219 - Mobile-based EHR Companion for ASHA Workers
 - **Category**: Healthcare Technology
 - **Target Users**: ASHA Workers, PHC Staff, Rural Healthcare Providers
 
